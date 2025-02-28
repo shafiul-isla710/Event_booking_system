@@ -11,10 +11,10 @@ class User extends Model
         'profile_image' => null
     ];
 
-    public function booking(){
+    public function Booking(){
         return $this->hasMany(Booking::class);
     }
-    public function notification(){
+    public function Notification(){
         return $this->hasMany(Notification::class);
     }
 }
