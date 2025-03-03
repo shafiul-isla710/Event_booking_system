@@ -17,4 +17,5 @@ class User extends Model
     public function Notification(){
         return $this->hasMany(Notification::class);
     }
+    protected $hidden = ['created_at','updated_at'];
 }
