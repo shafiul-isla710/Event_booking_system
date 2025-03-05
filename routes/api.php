@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -24,7 +26,7 @@ Route::get('first', function (Request $request) {
 //get all users
 Route::get('/users',[UserController::class,'getUsers']);
 //get single user by id
-Route::get('/user/{id}',[UserController::class,'getUser']);
+// Route::get('/user/{id}',[UserController::class,'getUser']);
 //create user
 Route::post('/user-create',[UserController::class,'createUser']);
 //update user
@@ -60,3 +62,13 @@ Route::post('/booking-create',[BookingController::class,'createBooking']);
 Route::put('/booking-update/{id}',[BookingController::class,'updateBooking']);
 //delete booking
 Route::delete('/booking-delete/{id}',[BookingController::class,'destroyBooking']);
+
+
+/***
+ * Authentication controller operation
+ */
+
+ Route::post('/member-registration',[AuthController::class,'memberRegistration']);
+ Route::post('/login',[AuthController::class, 'login']);
+ Route::get('/user/{id}',[AuthController::class, 'getUser'])->middleware('auth:sanctum');
+ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
