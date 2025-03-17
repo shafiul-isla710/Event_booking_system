@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationConfirmMail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -17,7 +19,7 @@ class AuthController extends Controller
                 'name'=>'required',
                 'email'=>'required|email|unique:users',
                 'password'=>'required|string|confirmed|min:6',
-                'role'=>'required',
+                'password_confirmation'=>'required',
                 'profile_image'=>'nullable'
             ]);
 
@@ -32,19 +34,23 @@ class AuthController extends Controller
             $profile_image = null;
 
             if($request->hasFile('profile_image')){
-                $file = $request->file('profile_image');
-                $profile_image = time().$file->getClientOriginalName();
-                $file->move(public_path('profile_images'),$profile_image);
+                $image = $request->file('profile_image');
+                $imageName = 'profile_image'.time().'.'.$image->extension();
+                $image->storeAs('profile_images',$imageName,'public');
+                $profile_image = 'storage/profile_images/'.$imageName;
             }
 
             $user = User::create([
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'password'=>bcrypt($request->password),
-                'role'=>$request->role,
+                'role'=>'user',
                 'profile_image'=>$profile_image
             ]);
+
+        
             $token = $user->createToken('auth_token')->plainTextToken;
+            Mail::to($user->email)->send(new RegistrationConfirmMail($user->name));
 
             return response()->json([
                 'status'=>true,
@@ -93,7 +99,8 @@ class AuthController extends Controller
                 else{
                     return response()->json([
                         'status'=>false,
-                        'message'=>'Login failed. Invalid credentials'
+                        'message'=>'Login failed. Invalid credentials',
+                       
                     ],401);
                 }
             }
