@@ -39,7 +39,7 @@ class AuthController extends Controller
                 $image->storeAs('profile_images',$imageName,'public');
                 $profile_image = 'storage/profile_images/'.$imageName;
             }
-
+            http://127.0.0.1:8000/storage/profile_images/profile_image1742117823.png
             $user = User::create([
                 'name'=>$request->name,
                 'email'=>$request->email,

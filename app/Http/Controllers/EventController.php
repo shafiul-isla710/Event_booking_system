@@ -71,11 +71,13 @@ class EventController extends Controller
                 'title'=>'required|string',
                 'description'=>'required',
                 'start_date'=>'required|date',
+                'ticket_price'=>'required',
                 'end_date'=>'required|date|after:start_date',
             ]);
 
             $event = Event::findOrFail($request->id)->update([
                 'title'=>$request->title,
+                'ticket_price'=>$request->ticket_price,
                 'description'=>$request->description,
                 'start_date'=>$request->start_date,
                 'end_date'=>$request->end_date

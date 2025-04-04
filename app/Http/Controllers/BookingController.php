@@ -34,6 +34,21 @@ class BookingController extends Controller
             return response()->json(['status'=>false,'message'=>$e->getMessage()]);
         }
      }
+
+     /**
+      * get booking by user id
+      */
+
+      public function getBookingsByUserId(Request $request){
+         
+        try{
+            $bookings = Booking::with(['Event','User'])->where('user_id',$request->id)->get();
+            return response()->json(['status'=>true,'data'=>$bookings],200);
+        }
+        catch(\Exception $e){
+            return response()->json(['status'=>false,'message'=>$e->getMessage()]);
+        }
+      }
      /**
      * create booking
      */
@@ -44,10 +59,17 @@ class BookingController extends Controller
                 'user_id'=>'required',
                 'event_id'=>'required',
                 'ticket_qty'=>'required',
+                'total_price'=>'required',
                 'ticket_price'=>'required',
-                'status'=>'required'
             ]);
-            $booking = Booking::create($request->all());
+           $booking = Booking::create([
+                'user_id'=>$request->user_id,
+                'event_id'=>$request->event_id,
+                'ticket_qty'=>$request->ticket_qty,
+                'total_price'=>$request->total_price,
+                'ticket_price'=>$request->ticket_price,
+                'status'=>'pending'
+           ]);
             return response()->json(['status'=>true,'message'=>'Booking created successfully','data'=>$booking],200);
         }
 

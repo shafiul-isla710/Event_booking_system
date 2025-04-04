@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     
-    protected $fillable = ['title','description','start_date','end_date'];
+    protected $fillable = ['title','description','start_date','end_date','ticket_price'];
     public function Booking(){
         return $this->hasMany(Booking::class);
     }

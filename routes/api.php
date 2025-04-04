@@ -56,6 +56,9 @@ Route::delete('/event-delete/{id}',[EventController::class,'destroyEvent']);
 Route::get('/bookings',[BookingController::class,'getBookings']);
 //get single booking by id
 Route::get('/booking/{id}',[BookingController::class,'getBooking']);
+//get booking by user id
+Route::get('/booking-user/{id}',[BookingController::class,'getBookingsByUserId']);
+
 //create booking
 Route::post('/booking-create',[BookingController::class,'createBooking']);
 //update booking
