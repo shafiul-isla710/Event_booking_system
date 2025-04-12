@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\bookingStatusUpdateNotification;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 
@@ -94,7 +95,13 @@ class BookingController extends Controller
             ]);
            
             $booking = Booking::findOrFail($request->id)->update($request->all());
+
+            $bookingData = Booking::with(['Event','User'])->findOrFail($request->id);
+            event(new bookingStatusUpdateNotification($bookingData));
+
             return response()->json(['status'=>true,'message'=>'Booking updated successfully','data'=>$booking],200);
+
+           
         }
         catch(\Exception $e){
             return response()->json(['status'=>false,'message'=>$e->getMessage()]);

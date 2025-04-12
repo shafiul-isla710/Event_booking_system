@@ -18,28 +18,9 @@ class BookingSeederTable extends Seeder
             'event_id'=>1,
             'ticket_qty'=>2,
             'ticket_price'=>200,
+            'total_price'=>400,
             'status'=>'pending',
         ]);
-        Booking::create([
-            'user_id'=> 4,
-            'event_id'=>2,
-            'ticket_qty'=>1,
-            'ticket_price'=>300,
-            'status'=>'confirmed',
-        ]);
-        Booking::create([
-            'user_id'=> 4,
-            'event_id'=>2,
-            'ticket_qty'=>2,
-            'ticket_price'=>300,
-            'status'=>'confirmed',
-        ]);
-        Booking::create([
-            'user_id'=> 5,
-            'event_id'=>3,
-            'ticket_qty'=>1,
-            'ticket_price'=>200,
-            'status'=>'pending',
-        ]);
+       
     }
 }
